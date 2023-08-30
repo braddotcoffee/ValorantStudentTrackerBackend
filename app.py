@@ -15,9 +15,14 @@ limiter = Limiter(
 )
 
 
-@app.route("/sample", methods=["GET"])
+@app.route("/list_students", methods=["GET"])
 @cross_origin(support_credentials=True)
-def sample():
+def list_students():
+    return "Hello World!\n", 200
+
+@app.route("/student", methods=["GET"])
+@cross_origin(support_credentials=True)
+def student():
     return "Hello World!\n", 200
 
 
