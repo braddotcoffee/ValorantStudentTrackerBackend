@@ -143,11 +143,12 @@ To run this project you can pull the Docker image directly from GitHub packages:
 
 ```bash
 docker pull ghcr.io/braddotcoffee/valorantstudenttrackerbackend:main
+docker tag ghcr.io/braddotcoffee/valorantstudenttrackerbackend:main student-tracker-backend
 ```
 
 Or build it locally:
 ```bash
-docker build . -t valorantstudenttrackerbackend
+docker build . -t student-tracker-backend
 ```
 
 To run you must provide your Google API Key and Google Sheet ID (must be publicly viewable):
@@ -155,5 +156,5 @@ To run you must provide your Google API Key and Google Sheet ID (must be publicl
 docker run -p 5000:5000 \
     -e GOOGLE_API_KEY=$GOOGLE_API_KEY \
     -e GOOGLE_SHEET_ID=$GOOGLE_SHEET_ID \
-    valorantstudenttrackerbackend
+    student-tracker-backend
 ```
