@@ -157,23 +157,38 @@ Or build it locally:
 docker build . -t student-tracker-backend
 ```
 
-To run you must provide your Google API Key and Google Sheet ID (must be publicly viewable):
-```bash
-docker run -p 5000:5000 \
-    -e GOOGLE_API_KEY=$GOOGLE_API_KEY \
-    -e GOOGLE_SHEET_ID=$GOOGLE_SHEET_ID \
-    student-tracker-backend
+
+## Create Your Config
+
+Define a `config.yaml` and `secrets.yaml` file to specify your Google API Key and Spreadsheet ID.
+**Your Spreadsheet ID must be to a publicly viewable spreadsheet.**
+
+### config.yaml
+```yaml
+Google:
+    SheetID: <your_sheet_id>
 ```
 
-Optionally define an environment file `student-tracker-backend.env`:
-```
-GOOGLE_SHEET_ID=<your_sheet_id>
-GOOGLE_API_KEY=<your_api_key>
+### secrets.yaml
+```yaml
+Google:
+    API_KEY: <your_api_key>
 ```
 
-Pass this file to Docker when running:
+## Running with Docker Compose (Recommended)
+
+Copy the contents of [compose.yaml](compose.yaml) to your local directory and run
+```bash
+docker compose up
+```
+
+## Running with Docker CLI
+Mount the `config.yaml` and `secrets.yaml` file as part of `docker run`. 
+
 ```bash
 docker run -p 5000:5000 \
-    --env-file student-tracker-backend.env \
+    --name student-tracker-backend \
+    --mount type=bind,source="$(pwd)"/secrets.yaml,target=/secrets.yaml,readonly \
+    --mount type=bind,source="$(pwd)"/config.yaml,target=/config.yaml,readonly \
     student-tracker-backend
 ```
