@@ -105,6 +105,16 @@ Too Many Requests
 
 ## Error Responses
 
+**Code** : `400 Bad Request`
+
+**Content examples**
+
+If `?name=<student_name>` is not included in the request query params.
+
+```
+404 Not Found
+```
+
 **Code** : `404 Not Found`
 
 **Content examples**
