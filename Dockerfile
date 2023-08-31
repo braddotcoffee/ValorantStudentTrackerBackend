@@ -10,4 +10,4 @@ ADD config.py /
 ADD lib /lib
 
 EXPOSE 5000
-ENTRYPOINT [ "python3", "app.py" ]
+ENTRYPOINT [ "gunicorn", "-b", "0.0.0.0:5000", "app:app" ]

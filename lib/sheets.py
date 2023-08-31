@@ -24,7 +24,9 @@ class SheetsService:
         if len(ranges) == 0:
             return ranges
         wrapped_names = ranges[0].get("values", [])
-        return list(map(lambda wrapped_name: wrapped_name[0], wrapped_names))
+        return {
+            "students": list(map(lambda wrapped_name: wrapped_name[0], wrapped_names))
+        }
 
     @staticmethod
     def fetch_student(student_name: str):

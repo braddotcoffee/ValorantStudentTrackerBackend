@@ -16,8 +16,14 @@ supports pulling student notes from the Google Sheets API and returning them to 
 # Usage Example
 
 ```python
-def todo():
-    return "Implement basic usage"
+import requests
+import json
+
+response = requests.get("http://localhost:5000/list_students")
+student_response = json.loads(response.content)
+
+for student in student_response["students"]:
+    print(f"{student} has gained RR thanks to Woohoojin")
 ```
 
 # API Documentation

@@ -17,7 +17,7 @@ limiter = Limiter(
 @cross_origin(support_credentials=True)
 def list_students():
     result = SheetsService.fetch_students()
-    return result, 200
+    return jsonify(result), 200
 
 
 @app.route("/student", methods=["GET"])
