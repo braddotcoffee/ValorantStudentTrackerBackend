@@ -7,7 +7,6 @@ RUN pip install -r requirements.txt
 
 ADD app.py /
 ADD config.py /
-ADD config.yaml /
 ADD lib /lib
 
 EXPOSE 5000

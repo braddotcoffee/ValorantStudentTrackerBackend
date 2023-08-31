@@ -11,6 +11,7 @@ supports pulling student notes from the Google Sheets API and returning them to 
 
 1. [Usage](#usage-example)
 2. [API Documentation](#api-documentation)
+3. [How To Run](#how-to-run)
 
 # Usage Example
 
@@ -134,4 +135,25 @@ For the 101st request made in a given day.
 ```
 Too Many Requests
 100 per 1 day
+```
+
+# How To Run
+
+To run this project you can pull the Docker image directly from GitHub packages:
+
+```bash
+docker pull ghcr.io/braddotcoffee/valorantstudenttrackerbackend:main
+```
+
+Or build it locally:
+```bash
+docker build . -t valorantstudenttrackerbackend
+```
+
+To run you must provide your Google API Key and Google Sheet ID (must be publicly viewable):
+```bash
+docker run -p 5000:5000 \
+    -e GOOGLE_API_KEY=$GOOGLE_API_KEY \
+    -e GOOGLE_SHEET_ID=$GOOGLE_SHEET_ID \
+    valorantstudenttrackerbackend
 ```

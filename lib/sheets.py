@@ -1,4 +1,4 @@
-from config import YAMLConfig as Config
+from config import Config
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 
