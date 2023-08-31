@@ -164,3 +164,16 @@ docker run -p 5000:5000 \
     -e GOOGLE_SHEET_ID=$GOOGLE_SHEET_ID \
     student-tracker-backend
 ```
+
+Optionally define an environment file `student-tracker-backend.env`:
+```
+GOOGLE_SHEET_ID=<your_sheet_id>
+GOOGLE_API_KEY=<your_api_key>
+```
+
+Pass this file to Docker when running:
+```bash
+docker run -p 5000:5000 \
+    --env-file student-tracker-backend.env \
+    student-tracker-backend
+```
