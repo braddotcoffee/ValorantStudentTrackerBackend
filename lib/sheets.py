@@ -8,6 +8,7 @@ API_KEY = Config.CONFIG["Secrets"]["Google"]["API_KEY"]
 SPREADSHEET_ID = Config.CONFIG["Google"]["SheetID"]
 
 
+
 class SheetsService:
     SERVICE = build("sheets", "v4", developerKey=API_KEY)
 
@@ -31,7 +32,7 @@ class SheetsService:
     @staticmethod
     def fetch_student(student_name: str):
         student_name = student_name.lower()
-        range_names = ["Students!A2:C", "Notes!A2:C"]
+        range_names = ["Students!A2:D", "Notes!A2:E"]
         result = (
             SheetsService.SERVICE.spreadsheets()
             .values()
@@ -56,15 +57,31 @@ class SheetsService:
             filter(lambda note: note[0].lower() == student_name, notes_data)
         )
         notes_data.sort(key=lambda note: note[2])
-        return {
+        return SheetsService._build_student_response(student_metadata, notes_data)
+
+    @staticmethod
+    def _build_student_response(student_metadata: list[str], notes_data: list[str]) -> dict:
+        student = {
             "name": student_metadata[0],
             "tracker": student_metadata[1],
             "startingRank": student_metadata[2],
-            "notes": [
-                {
-                    "content": note[1],
-                    "date": note[2],
-                }
-                for note in notes_data
-            ],
         }
+
+        if len(student_metadata) >= 4:
+            student["startingRR"] = student_metadata[3]
+
+        student["notes"] = [SheetsService._build_note_response(note) for note in notes_data]
+        return student
+
+    @staticmethod
+    def _build_note_response(note: list[str]) -> dict:
+        note_dict = {
+            "content": note[1],
+            "date": note[2],
+        }
+        if len(note) >= 4:
+            note_dict["currentRank"] = note[3]
+        if len(note) >= 5:
+            note_dict["currentRR"] = note[4]
+
+        return note_dict
