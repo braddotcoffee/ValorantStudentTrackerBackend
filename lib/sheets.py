@@ -8,17 +8,18 @@ API_KEY = Config.CONFIG["Secrets"]["Google"]["API_KEY"]
 SPREADSHEET_ID = Config.CONFIG["Google"]["SheetID"]
 
 
-
 class SheetsService:
     SERVICE = build("sheets", "v4", developerKey=API_KEY)
 
     @staticmethod
-    def fetch_students():
+    def fetch_students(spreadsheet_id: str = None):
+        if spreadsheet_id is None:
+            spreadsheet_id = SPREADSHEET_ID
         range_names = ["Students!A2:A"]
         result = (
             SheetsService.SERVICE.spreadsheets()
             .values()
-            .batchGet(spreadsheetId=SPREADSHEET_ID, ranges=range_names)
+            .batchGet(spreadsheetId=spreadsheet_id, ranges=range_names)
             .execute()
         )
         ranges = result.get("valueRanges", [])
@@ -30,13 +31,16 @@ class SheetsService:
         }
 
     @staticmethod
-    def fetch_student(student_name: str):
+    def fetch_student(student_name: str, spreadsheet_id: str = None):
+        if spreadsheet_id is None:
+            spreadsheet_id = SPREADSHEET_ID
+
         student_name = student_name.lower()
         range_names = ["Students!A2:D", "Notes!A2:E"]
         result = (
             SheetsService.SERVICE.spreadsheets()
             .values()
-            .batchGet(spreadsheetId=SPREADSHEET_ID, ranges=range_names)
+            .batchGet(spreadsheetId=spreadsheet_id, ranges=range_names)
             .execute()
         )
         ranges = result.get("valueRanges", [])
@@ -60,7 +64,9 @@ class SheetsService:
         return SheetsService._build_student_response(student_metadata, notes_data)
 
     @staticmethod
-    def _build_student_response(student_metadata: list[str], notes_data: list[str]) -> dict:
+    def _build_student_response(
+        student_metadata: list[str], notes_data: list[str]
+    ) -> dict:
         student = {
             "name": student_metadata[0],
             "tracker": student_metadata[1],
@@ -70,7 +76,9 @@ class SheetsService:
         if len(student_metadata) >= 4:
             student["startingRR"] = student_metadata[3]
 
-        student["notes"] = [SheetsService._build_note_response(note) for note in notes_data]
+        student["notes"] = [
+            SheetsService._build_note_response(note) for note in notes_data
+        ]
         return student
 
     @staticmethod

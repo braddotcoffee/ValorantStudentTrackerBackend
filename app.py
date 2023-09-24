@@ -16,7 +16,7 @@ limiter = Limiter(
 @app.route("/list_students", methods=["GET"])
 @cross_origin(support_credentials=True)
 def list_students():
-    result = SheetsService.fetch_students()
+    result = SheetsService.fetch_students(request.headers.get("X-Spreadsheet-ID"))
     return jsonify(result), 200
 
 
@@ -27,7 +27,9 @@ def student():
         return "Bad Request", 400
     student_name = request.args["name"]
     try:
-        student = SheetsService.fetch_student(student_name)
+        student = SheetsService.fetch_student(
+            student_name, request.headers.get("X-Spreadsheet-Id")
+        )
         return jsonify(student), 200
     except NotFoundError:
         return "Not Found", 404
