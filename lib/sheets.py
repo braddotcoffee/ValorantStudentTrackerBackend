@@ -1,6 +1,5 @@
 from config import Config
 from googleapiclient.discovery import build
-from googleapiclient.errors import HttpError
 
 from lib.not_found import NotFoundError
 
